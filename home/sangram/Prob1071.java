@@ -1,9 +1,6 @@
 package home.sangram;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * For two strings s and t, we say "t divides s" if and only if s = t + ... + t (i.e., t is concatenated with itself one or more times).
@@ -20,47 +17,20 @@ import java.util.Set;
  */
 public class Prob1071 {
     public static void main(String[] args) {
-//        System.out.println(new Prob1071().gcdOfStrings("ABA", "ABAB"));
-        new Prob1071().test("ABCABC", "AB");
+        System.out.println(new Prob1071().gcdOfStrings("ABA", "ABCADABCAD"));
     }
 
-    public void test(String str1, String str2) {
-        List<String> gcdList = new ArrayList<>();
-        char[] str1Arr = str1.toCharArray();
-        int index = 0;
-        for (int i = 0; i < str1.length(); i++) {
-            if (i == 0)  gcdList.add(String.valueOf(str1Arr[i]));
-            else if (!gcdList.contains(String.valueOf(str1Arr[i]))) {
-                gcdList.add(index, gcdList.get(index - 1) + str1Arr[i]);
-            }
-            index++;
-//            else gcdList.add(String.valueOf(str1Arr[i]));
-        }
-        System.out.println(gcdList);
-    }
     public String gcdOfStrings(String str1, String str2) {
-        String gcd = getRep(str2);
-        return gcd.equals(getRep(str1)) ? gcd : "";
-    }
-
-    public String getRep(String str) {
-        StringBuilder gcd = new StringBuilder();
-        char[] str2Arr = str.toCharArray();
-        Set<Character> charSet = new HashSet<>();
-        boolean repFlag = false;
-        for(char c : str2Arr){
-            boolean isCharPresent = charSet.add(c);
-            if(isCharPresent && repFlag) {
-                gcd.append(c);
-            } else if (isCharPresent) {
-                gcd.append(c);
-                repFlag = true;
+        int len1 =  str1.length(), len2 = str2.length();
+        int maxIndex = Math.min(len1, len2);
+        for(int i = maxIndex; i >= 1; i--) {
+            if(len1 % i == 0 && len2 % i == 0 && str1.substring(0, i).equals(str2.substring(0, i))){
+                String s1 = str1.substring(i) + str1.substring(0, i);
+                String s2 = str2.substring(i) + str2.substring(0 ,i);
+                if (s1.equals(str1) && s2.equals(str2))
+                    return str1.substring(0, i);
             }
         }
-        if ( !(str.length() % gcd.length() == 0) ) {
-            gcd.delete(0, gcd.length());
-            gcd.append(str);
-        }
-        return gcd.toString();
+        return "";
     }
 }
