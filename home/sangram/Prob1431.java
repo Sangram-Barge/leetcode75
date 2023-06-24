@@ -1,9 +1,7 @@
 package home.sangram;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * There are n kids with candies. You are given an integer array candies,
@@ -35,8 +33,14 @@ public class Prob1431 {
     }
 
     public List<Boolean> kidsWithCandies(int[] candies, int extraCandies) {
-        int max = Arrays.stream(candies).max().getAsInt();
-        return Arrays.stream(candies).mapToObj(c -> c + extraCandies >= max).collect(Collectors.toList());
+        int max = 0;
+        for (int c : candies) {
+            if (c > max) max = c;
+        }
+        List<Boolean> lst = new ArrayList<>();
+        for (int candy : candies) {
+            lst.add(candy + extraCandies >= max);
+        }
+        return lst;
     }
-
 }
